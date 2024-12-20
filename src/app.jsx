@@ -62,6 +62,20 @@ class TodoList extends React.Component {
                 { _id: 3, text: 'Learn GraphQL', done: false },
             ]
         };
+
+        this.newTodo = this.newTodo.bind(this);
+    }
+
+    newTodo(event) {
+        event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url
+
+        const todos = this.state.todos;
+        todos.push({ _id: todos.length + 1, text: 'New Item', done: false });
+
+        this.setState(state => ({
+            todos: todos
+        }));
+
     }
 
     render() {
@@ -75,6 +89,7 @@ class TodoList extends React.Component {
             <React.Fragment>
                 <h1>React ToDo App</h1>
                 {todoList}
+                <a href="#" onClick={this.newTodo}>Add ToDo Item</a>
             </React.Fragment>
         );
     }

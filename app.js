@@ -86,10 +86,26 @@ var TodoList = function (_React$Component2) {
         _this2.state = {
             todos: [{ _id: 1, text: 'Learn React', done: false }, { _id: 2, text: 'Learn Redux', done: true }, { _id: 3, text: 'Learn GraphQL', done: false }]
         };
+
+        _this2.newTodo = _this2.newTodo.bind(_this2);
         return _this2;
     }
 
     _createClass(TodoList, [{
+        key: "newTodo",
+        value: function newTodo(event) {
+            event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url
+
+            var todos = this.state.todos;
+            todos.push({ _id: todos.length + 1, text: 'New Item', done: false });
+
+            this.setState(function (state) {
+                return {
+                    todos: todos
+                };
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
             var todoList = this.state.todos.map(function (todo) {
@@ -104,7 +120,12 @@ var TodoList = function (_React$Component2) {
                     null,
                     "React ToDo App"
                 ),
-                todoList
+                todoList,
+                React.createElement(
+                    "a",
+                    { href: "#", onClick: this.newTodo },
+                    "Add ToDo Item"
+                )
             );
         }
     }]);
