@@ -8,6 +8,8 @@ class Todo extends React.Component {
         };
 
         this.handleClick = this.handleClick.bind(this); // garante que dentro da função handleClick o this seja o mesmo que o this da classe Todo
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleClick(event) {
@@ -15,10 +17,25 @@ class Todo extends React.Component {
             state => ({
                 done: !state.done
             }),
-            // function (event) {
-            //     this.handleSubmit(event)
-            // }
+            function (event) {
+                this.handleSubmit(event)
+            }
         );
+    }
+
+    handleChange(event) {
+        let text = event.target.value;
+
+        this.setState(state => ({
+            text: text
+        }));
+    }
+
+    handleSubmit(event) {
+        console.log('You successfully submitted!')
+
+        // this.setState(state => ({
+        // }));
     }
 
     render() {
@@ -26,7 +43,7 @@ class Todo extends React.Component {
             <div className="todo">
                 <span>
                     <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
-                    <input type="text" value={this.state.text} />
+                    <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} />
                 </span>
             </div>
         );
