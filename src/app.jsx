@@ -43,7 +43,8 @@ class Todo extends React.Component {
             <div className="todo">
                 <span>
                     <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
-                    <input type="text" value={this.state.text} onChange={this.handleChange} onBlur={this.handleSubmit} />
+                    <input type="text" value={this.state.text}  className={(this.state.done) ? 'done' : 'not-done'} 
+                                                                onChange={this.handleChange} onBlur={this.handleSubmit} />
                 </span>
             </div>
         );
@@ -69,7 +70,7 @@ class TodoList extends React.Component {
     newTodo(event) {
         event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url
 
-        const todos = this.state.todos;
+        let todos = this.state.todos;
         todos.push({ _id: todos.length + 1, text: 'New Item', done: false });
 
         this.setState(state => ({
@@ -89,7 +90,9 @@ class TodoList extends React.Component {
             <React.Fragment>
                 <h1>React ToDo App</h1>
                 {todoList}
-                <a href="#" onClick={this.newTodo}>Add ToDo Item</a>
+                <div className="new-item-button">
+                    <a href="#" onClick={this.newTodo}>Add ToDo Item</a>
+                </div>
             </React.Fragment>
         );
     }
