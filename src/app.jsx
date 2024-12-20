@@ -11,16 +11,21 @@ class Todo extends React.Component {
     }
 
     handleClick(event) {
-        this.setState(state => ({ // esse this se n tivesse bind la no event handler perderia o contexto creio
-            done: !state.done
-        }));
+        this.setState( // esse this se n tivesse bind la no event handler perderia o contexto creio
+            state => ({
+                done: !state.done
+            }),
+            // function (event) {
+            //     this.handleSubmit(event)
+            // }
+        );
     }
 
     render() {
-        return(
+        return (
             <div className="todo">
                 <span>
-                    <input type="checkbox" checked={this.state.done} onClick={this.handleClick} /> 
+                    <input type="checkbox" checked={this.state.done} onClick={this.handleClick} />
                     <input type="text" value={this.state.text} />
                 </span>
             </div>
@@ -30,5 +35,5 @@ class Todo extends React.Component {
 
 ReactDOM.render(
     <Todo text="Todo 1" done="false" />,
-    document.getElementById('root')  
+    document.getElementById('root')
 );

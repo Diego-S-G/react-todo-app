@@ -26,11 +26,16 @@ var Todo = function (_React$Component) {
     _createClass(Todo, [{
         key: "handleClick",
         value: function handleClick(event) {
-            this.setState(function (state) {
-                return { // esse this se n tivesse bind la no event handler perderia o contexto creio
+            this.setState( // esse this se n tivesse bind la no event handler perderia o contexto creio
+            function (state) {
+                return {
                     done: !state.done
                 };
-            });
+            }
+            // function (event) {
+            //     this.handleSubmit(event)
+            // }
+            );
         }
     }, {
         key: "render",
