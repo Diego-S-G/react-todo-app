@@ -15,7 +15,7 @@ var Todo = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, props));
 
         _this.state = {
-            done: _this.props.done == "true" && props.done,
+            done: props.done,
             text: props.text
         };
 
@@ -75,4 +75,41 @@ var Todo = function (_React$Component) {
     return Todo;
 }(React.Component);
 
-ReactDOM.render(React.createElement(Todo, { text: "Todo 1", done: "false" }), document.getElementById('root'));
+var TodoList = function (_React$Component2) {
+    _inherits(TodoList, _React$Component2);
+
+    function TodoList(props) {
+        _classCallCheck(this, TodoList);
+
+        var _this2 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
+
+        _this2.state = {
+            todos: [{ _id: 1, text: 'Learn React', done: false }, { _id: 2, text: 'Learn Redux', done: true }, { _id: 3, text: 'Learn GraphQL', done: false }]
+        };
+        return _this2;
+    }
+
+    _createClass(TodoList, [{
+        key: "render",
+        value: function render() {
+            var todoList = this.state.todos.map(function (todo) {
+                return React.createElement(Todo, { key: todo._id.toString(), text: todo.text, done: todo.done });
+            });
+
+            return React.createElement(
+                React.Fragment,
+                null,
+                React.createElement(
+                    "h1",
+                    null,
+                    "React ToDo App"
+                ),
+                todoList
+            );
+        }
+    }]);
+
+    return TodoList;
+}(React.Component);
+
+ReactDOM.render(React.createElement(TodoList, null), document.getElementById('root'));
