@@ -1,3 +1,5 @@
+// npx babel --watch src --out-dir . --presets react-app/prod roda no terminal e aí pode rodar no browser
+
 class Todo extends React.Component {
     constructor(props) {
         super(props);
