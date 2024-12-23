@@ -26,7 +26,7 @@ var Todo = function (_React$Component) {
     }
 
     _createClass(Todo, [{
-        key: "handleClick",
+        key: 'handleClick',
         value: function handleClick(event) {
             this.setState( // esse this se n tivesse bind la no event handler perderia o contexto creio
             function (state) {
@@ -38,7 +38,7 @@ var Todo = function (_React$Component) {
             });
         }
     }, {
-        key: "handleChange",
+        key: 'handleChange',
         value: function handleChange(event) {
             var text = event.target.value;
 
@@ -49,24 +49,43 @@ var Todo = function (_React$Component) {
             });
         }
     }, {
-        key: "handleSubmit",
+        key: 'handleSubmit',
         value: function handleSubmit(event) {
-            console.log('You successfully submitted!');
+            var _this2 = this;
 
-            // this.setState(state => ({
-            // }));
+            var id = this.props.id || this.state._id;
+
+            if (id == "" || id == undefined) {
+                fetch('http://localhost:3000/todos', {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: this.state.text, done: this.state.done })
+                }).then(function (response) {
+                    return response.json();
+                }).then(function (data) {
+                    return _this2.setState(function (state) {
+                        return { _id: data._id };
+                    });
+                });
+            } else {
+                fetch('http://localhost:3000/todos/' + id, {
+                    method: 'put',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: this.state.text, done: this.state.done })
+                });
+            }
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
-                { className: "todo" },
+                'div',
+                { className: 'todo' },
                 React.createElement(
-                    "span",
+                    'span',
                     null,
-                    React.createElement("input", { type: "checkbox", checked: this.state.done, onClick: this.handleClick }),
-                    React.createElement("input", { type: "text", value: this.state.text, className: this.state.done ? 'done' : 'not-done',
+                    React.createElement('input', { type: 'checkbox', checked: this.state.done, onClick: this.handleClick }),
+                    React.createElement('input', { type: 'text', value: this.state.text, className: this.state.done ? 'done' : 'not-done',
                         onChange: this.handleChange, onBlur: this.handleSubmit })
                 )
             );
@@ -82,23 +101,38 @@ var TodoList = function (_React$Component2) {
     function TodoList(props) {
         _classCallCheck(this, TodoList);
 
-        var _this2 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
 
-        _this2.state = {
-            todos: [{ _id: 1, text: 'Learn React', done: false }, { _id: 2, text: 'Learn Redux', done: true }, { _id: 3, text: 'Learn GraphQL', done: false }]
+        _this3.state = {
+            todos: []
         };
 
-        _this2.newTodo = _this2.newTodo.bind(_this2);
-        return _this2;
+        _this3.newTodo = _this3.newTodo.bind(_this3);
+        return _this3;
     }
 
     _createClass(TodoList, [{
-        key: "newTodo",
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this4 = this;
+
+            fetch('http://localhost:3000/todos').then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                _this4.setState(function (state) {
+                    return {
+                        todos: data.todos
+                    };
+                });
+            });
+        }
+    }, {
+        key: 'newTodo',
         value: function newTodo(event) {
             event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url
 
             var todos = this.state.todos;
-            todos.push({ _id: todos.length + 1, text: 'New Item', done: false });
+            todos.push({ _id: '', text: 'New Item', done: false });
 
             this.setState(function (state) {
                 return {
@@ -107,28 +141,28 @@ var TodoList = function (_React$Component2) {
             });
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var todoList = this.state.todos.map(function (todo) {
-                return React.createElement(Todo, { key: todo._id.toString(), text: todo.text, done: todo.done });
+                return React.createElement(Todo, { id: todo._id, key: todo._id.toString(), text: todo.text, done: todo.done });
             });
 
             return React.createElement(
                 React.Fragment,
                 null,
                 React.createElement(
-                    "h1",
+                    'h1',
                     null,
-                    "React ToDo App"
+                    'React ToDo App'
                 ),
                 todoList,
                 React.createElement(
-                    "div",
-                    { className: "new-item-button" },
+                    'div',
+                    { className: 'new-item-button' },
                     React.createElement(
-                        "a",
-                        { href: "#", onClick: this.newTodo },
-                        "Add ToDo Item"
+                        'a',
+                        { href: '#', onClick: this.newTodo },
+                        'Add ToDo Item'
                     )
                 )
             );

@@ -1,3 +1,5 @@
+// npx babel --watch src --out-dir . --presets react-app/prod roda no terminal e aí pode rodar no browser
+
 class Todo extends React.Component {
     constructor(props) {
         super(props);
@@ -32,10 +34,21 @@ class Todo extends React.Component {
     }
 
     handleSubmit(event) {
-        console.log('You successfully submitted!')
+        let id = this.props.id || this.state._id;
 
-        // this.setState(state => ({
-        // }));
+        if(id == "" || id == undefined) {
+            fetch('http://localhost:3000/todos', {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: this.state.text, done: this.state.done })
+            }).then(response => response.json()).then(data => this.setState(state => ({ _id: data._id })));
+        } else {
+            fetch(`http://localhost:3000/todos/${id}`, {
+                method: 'put',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: this.state.text, done: this.state.done }) 
+            });
+        }
     }
 
     render() {
@@ -57,21 +70,27 @@ class TodoList extends React.Component {
         super(props);
 
         this.state = {
-            todos: [
-                { _id: 1, text: 'Learn React', done: false },
-                { _id: 2, text: 'Learn Redux', done: true },
-                { _id: 3, text: 'Learn GraphQL', done: false },
-            ]
+            todos: []
         };
 
         this.newTodo = this.newTodo.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('http://localhost:3000/todos')
+            .then(response => response.json())
+            .then(data => {
+                this.setState(state => ({
+                    todos: data.todos
+                }));
+            });
     }
 
     newTodo(event) {
         event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url
 
         let todos = this.state.todos;
-        todos.push({ _id: todos.length + 1, text: 'New Item', done: false });
+        todos.push({ _id: '', text: 'New Item', done: false });
 
         this.setState(state => ({
             todos: todos
@@ -82,7 +101,7 @@ class TodoList extends React.Component {
     render() {
         const todoList = this.state.todos.map((todo) => {
             return (
-                <Todo key={todo._id.toString()} text={todo.text} done={todo.done} />
+                <Todo id={todo._id} key={todo._id.toString()} text={todo.text} done={todo.done} />
             );
         });
 
