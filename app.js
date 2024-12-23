@@ -85,7 +85,7 @@ var TodoList = function (_React$Component2) {
         var _this2 = _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).call(this, props));
 
         _this2.state = {
-            todos: [{ _id: 1, text: 'Learn React', done: false }, { _id: 2, text: 'Learn Redux', done: true }, { _id: 3, text: 'Learn GraphQL', done: false }]
+            todos: []
         };
 
         _this2.newTodo = _this2.newTodo.bind(_this2);
@@ -93,6 +93,21 @@ var TodoList = function (_React$Component2) {
     }
 
     _createClass(TodoList, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this3 = this;
+
+            fetch('http://localhost:3000/todos').then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                _this3.setState(function (state) {
+                    return {
+                        todos: data.todos
+                    };
+                });
+            });
+        }
+    }, {
         key: "newTodo",
         value: function newTodo(event) {
             event.preventDefault(); // previne o comportamento padrão do link, ent n vai ter '#' na url

@@ -57,14 +57,20 @@ class TodoList extends React.Component {
         super(props);
 
         this.state = {
-            todos: [
-                { _id: 1, text: 'Learn React', done: false },
-                { _id: 2, text: 'Learn Redux', done: true },
-                { _id: 3, text: 'Learn GraphQL', done: false },
-            ]
+            todos: []
         };
 
         this.newTodo = this.newTodo.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('http://localhost:3000/todos')
+            .then(response => response.json())
+            .then(data => {
+                this.setState(state => ({
+                    todos: data.todos
+                }));
+            });
     }
 
     newTodo(event) {
