@@ -15,6 +15,3 @@ Este repositório é da parte do **React**, que é basicamente o frontend da apl
 
 ## Funcionamento:
 https://github.com/user-attachments/assets/72fc0515-1c23-44e4-bdab-0ba34d06bbea
-
-<br/>
-<br/>
